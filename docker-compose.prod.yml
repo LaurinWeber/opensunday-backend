@@ -17,7 +17,7 @@ services:
 
   db:
     ports:
-      - 23033:1433
+      - ${SQLSERVER_PORT}:1433
     volumes:
       - db-volume:/var/opt/mssql
 
