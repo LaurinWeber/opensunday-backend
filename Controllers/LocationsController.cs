@@ -23,6 +23,7 @@ namespace OpenSundayApi.Controllers
     #endregion
 
     // GET: api/Locations
+    //comment test 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Location>>> GetLocations()
     {
