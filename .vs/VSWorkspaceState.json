@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Controllers"
   ],
-  "SelectedNode": "\\.env.template",
+  "SelectedNode": "\\Startup.cs",
   "PreviewInSolutionExplorer": false
 }
