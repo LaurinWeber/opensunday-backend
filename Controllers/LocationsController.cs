@@ -38,6 +38,7 @@ namespace OpenSundayApi.Controllers
 
       if (location == null)
       {
+        
         return NotFound();
       }
 
