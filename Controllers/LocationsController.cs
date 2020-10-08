@@ -32,7 +32,7 @@ namespace OpenSundayApi.Controllers
     #region snippet_GetByID
     // GET: api/Locations/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Location>> GetLocation(long id)
+    public async Task<ActionResult<Location>> GetLocation(int id)
     {
       var location = await _context.Locations.FindAsync(id);
 
@@ -48,7 +48,7 @@ namespace OpenSundayApi.Controllers
     #region snippet_Update
     // PUT: api/Location/5
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutLocation(long id, Location location)
+    public async Task<IActionResult> PutLocation(int id, Location location)
     {
       if (id != location.Id)
       {
@@ -95,7 +95,7 @@ namespace OpenSundayApi.Controllers
     #region snippet_Delete
     // DELETE: api/Locations/5
     [HttpDelete("{id}")]
-    public async Task<ActionResult<Location>> DeleteLocation(long id)
+    public async Task<ActionResult<Location>> DeleteLocation(int id)
     {
       var location = await _context.Locations.FindAsync(id);
       if (location == null)
@@ -110,7 +110,7 @@ namespace OpenSundayApi.Controllers
     }
     #endregion
 
-    private bool LocationExists(long id)
+    private bool LocationExists(int id)
     {
       return _context.Locations.Any(e => e.Id == id);
     }
