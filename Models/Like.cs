@@ -1,7 +1,19 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 public class Like
 {
-public int Id { get; set; }
 
-public int Liked {get;set;}
+
+[Required]
+[ForeignKey("Location")]   
+public long FK_Location{ get; set; }
+
+
+[Required]
+[ForeignKey("User")]
+public int FK_User {get;set;}
+
+public int Likes{get;set;}
 
 }

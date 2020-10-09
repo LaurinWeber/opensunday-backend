@@ -6,15 +6,19 @@ namespace OpenSundayApi.Models
     {
         public OpenSundayContext(DbContextOptions<OpenSundayContext> options) : base(options) { }
 
-        public DbSet<Location> Locations { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<City> Cities { get; set; }
-        public DbSet<Like> Likes { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Location> Location { get; set; }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<City> City { get; set; }
+
+        public DbSet<Like> Like { get; set; }
+        public DbSet<Role> Role { get; set; }
+        public DbSet<User> User { get; set; }
 
 
-
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Like>().HasKey(ba => new { ba.FK_Location, ba.FK_User });      
+}
 
 
 

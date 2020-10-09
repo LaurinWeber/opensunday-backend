@@ -26,15 +26,15 @@ namespace OpenSundayApi.Controllers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Location>>> GetLocations()
     {
-      return await _context.Locations.ToListAsync();
+      return await _context.Location.ToListAsync();
     }
 
     #region snippet_GetByID
     // GET: api/Locations/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Location>> GetLocation(int id)
+    public async Task<ActionResult<Location>> GetLocation(long id)
     {
-      var location = await _context.Locations.FindAsync(id);
+      var location = await _context.Location.FindAsync(id);
 
       if (location == null)
       {
@@ -49,7 +49,7 @@ namespace OpenSundayApi.Controllers
     #region snippet_Update
     // PUT: api/Location/5
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutLocation(int id, Location location)
+    public async Task<IActionResult> PutLocation(long id, Location location)
     {
       if (id != location.Id)
       {
@@ -86,7 +86,7 @@ namespace OpenSundayApi.Controllers
       // Add creator ID based on the Auth0 User ID found in the JWT token
       location.Creator = User.Claims.First(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
 
-      _context.Locations.Add(location);
+      _context.Location.Add(location);
       await _context.SaveChangesAsync();
 
       return CreatedAtAction(nameof(GetLocation), new { id = location.Id }, location);
@@ -96,24 +96,24 @@ namespace OpenSundayApi.Controllers
     #region snippet_Delete
     // DELETE: api/Locations/5
     [HttpDelete("{id}")]
-    public async Task<ActionResult<Location>> DeleteLocation(int id)
+    public async Task<ActionResult<Location>> DeleteLocation(long id)
     {
-      var location = await _context.Locations.FindAsync(id);
+      var location = await _context.Location.FindAsync(id);
       if (location == null)
       {
         return NotFound();
       }
 
-      _context.Locations.Remove(location);
+      _context.Location.Remove(location);
       await _context.SaveChangesAsync();
 
       return location;
     }
     #endregion
 
-    private bool LocationExists(int id)
+    private bool LocationExists(long id)
     {
-      return _context.Locations.Any(e => e.Id == id);
+      return _context.Location.Any(e => e.Id == id);
     }
   }
 }

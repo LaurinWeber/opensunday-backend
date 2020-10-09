@@ -5,7 +5,7 @@ public class Location
 {
 
 [Key]
-public int Id { get; set; }
+public long Id { get; set; }
 [Required]
 public string Name { get; set; }
 
@@ -28,15 +28,17 @@ public string OpeningTime {get;set;}
 [Required]
 public string ClosingTime {get;set;}
 
-
+/*
 [Required]
 [ForeignKey("Like")]
 public int FK_Like {get;set;}
-
-
+*/
+/*
 [Required]
 [ForeignKey("User")]
 public int FK_User  {get;set;}
+*/
+
 
 [Required]
 [ForeignKey("Category")]
