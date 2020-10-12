@@ -39,6 +39,9 @@ public int FK_Like {get;set;}
 public int FK_User  {get;set;}
 */
 
+[Required]
+public bool IsVerified {get;set;}
+
 
 [Required]
 [ForeignKey("Category")]
