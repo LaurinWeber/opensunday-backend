@@ -26,6 +26,7 @@ namespace OpenSundayApi.Controllers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Location>>> GetLocations()
     {
+      //get all locations from the database
       return await _context.Location.ToListAsync();
     }
 
@@ -34,6 +35,7 @@ namespace OpenSundayApi.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult<Location>> GetLocation(long id)
     {
+      //get a location by it ID
       var location = await _context.Location.FindAsync(id);
 
       if (location == null)
@@ -84,10 +86,10 @@ namespace OpenSundayApi.Controllers
     [HttpPost]
     public async Task<ActionResult<Location>> PostLocation(LocationCityCat l)
     {
-      //check if city exists
+      //get City with the NPA of the post location from DB
       var city = await _context.City.FindAsync(l.NPA);
 
-      //add city
+      //If city does not exist in DB we add it
       if(city == null){
       City c = new City();
       c.NPA = l.NPA;
@@ -97,14 +99,15 @@ namespace OpenSundayApi.Controllers
         await _context.SaveChangesAsync();
       }
 
-      //get id from Category
+      //As in our post the categoryname is a string we have to retrieve its id from the DB
       var categories = await _context.Category.Where(cat => (cat.Name == (l.CategoryName))).ToListAsync();
       int catId = 0;
+
       foreach(var cat in categories){
         catId = cat.Id;
       }
 
-
+      //Create a location Object according to its attributes in the DB
       Location location = new Location();
       location.Id = l.Id;
       location.Name = l.Name;
@@ -126,13 +129,16 @@ namespace OpenSundayApi.Controllers
       {
         foreach(var lc in locations){
           if((lc.Longitude == location.Longitude) && (lc.Latitude == location.Latitude)){
-            return null;
+            return null; //if exists return null
           }
         }
       }
+
+      //if location does not exists we add it to the db
       _context.Location.Add(location);
       await _context.SaveChangesAsync();
 
+    //return of the inserted object from the db
       return CreatedAtAction(nameof(GetLocation), new { id = location.Id }, location);
     }
     #endregion

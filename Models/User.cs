@@ -1,5 +1,9 @@
-public class User
-{
-    public int Id { get; set; }
-    public string Identifier { get; set; }
-}
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
+        public class User
+        {
+            [Key]
+            public string Id{get; set;}
+        }
+ 

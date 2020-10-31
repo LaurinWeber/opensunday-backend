@@ -27,12 +27,13 @@ namespace OpenSundayApi.Controllers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
     {
+      //return all categories from DB
       return await _context.Category.ToListAsync();
     }
 
-//get locations by categoryname
+    //get locations by categoryname
   #region snippet_GetByName
-    // GET: api/Locations/5
+    // GET: api/Categories/Restaurant
     [HttpGet("{categoryName}")]
     public async Task<ActionResult<IEnumerable<Location>>> GetCategories(string categoryName)
     {
@@ -44,11 +45,11 @@ namespace OpenSundayApi.Controllers
         catId = cat.Id;
       }
 
+      //get all locations that from the category
       var locations = await _context.Location.Where(location => (location.FK_Category == catId)).ToListAsync();
   
       if (locations == null)
       {
-        
         return NotFound();
       }
 

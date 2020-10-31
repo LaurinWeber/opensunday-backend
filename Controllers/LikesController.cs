@@ -23,43 +23,44 @@ namespace OpenSundayApi.Controllers
         }
         #endregion
 
+        //get all likes the demanding user has posted
         // GET: api/Likes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Like>>> GetLikes()
         {
-            // Add creator ID based on the Auth0 User ID found in the JWT token
+            //get userId from jwt
              var user_id = User.Claims.First(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
 
             return await _context.Like.Where(l => (l.FK_User == (user_id))).ToListAsync();
         }
 
-                // GET: api/Likes
-    #region snippet_GetByID
-    // GET: api/Locations/5
+    //get all likes from a specific location
+    #region snippet_GetByID_Location
+    // GET: api/Likes/5
     [HttpGet("{id}")]
     public async Task<ActionResult<IEnumerable<Like>>> GetLikes(long id)
     {
+      //get the list of likes from location
       var likes = await _context.Like.Where(l => (l.FK_Location == (id))).ToListAsync();
 
       if (likes == null)
       {
-        
         return NotFound();
       }
-
       return likes;
     }
     #endregion
 
     #region snippet_Create
-    // POST: api/Locations
+    // POST: api/Like (Location Id & isLiked)
     [HttpPost]
     public async Task<ActionResult<Like>> PostLike(Like like)
     {
-            // Add creator ID based on the Auth0 User ID found in the JWT token
+            //retrieve Userid from Token
              var user_id = User.Claims.First(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
             like.FK_User = user_id;
 
+            //Add Like to Db
             _context.Like.Add(like);
             await _context.SaveChangesAsync();
 

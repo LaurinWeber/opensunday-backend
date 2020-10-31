@@ -23,19 +23,21 @@ namespace OpenSundayApi.Controllers
         }
         #endregion
 
-     // GET: api/Categories
+     // GET: api/Cities
     [HttpGet]
     public async Task<ActionResult<IEnumerable<City>>> GetCities()
     {
+      //return all cities from db
       return await _context.City.ToListAsync();
     }
 
-//get locations by city NPA
+    //get locations by city NPA
   #region snippet_GetByName
-    // GET: api/Locations/5
+    // GET: api/Cities/3704
     [HttpGet("{NPA}")]
     public async Task<ActionResult<IEnumerable<Location>>> GetCategories(int NPA)
     {
+      //get list of locations from specified NPA
       var locations = await _context.Location.Where(location => (location.FK_City == NPA)).ToListAsync();
   
       if (locations == null)
