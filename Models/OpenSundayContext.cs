@@ -11,7 +11,7 @@ namespace OpenSundayApi.Models
         public DbSet<City> City { get; set; }
 
         public DbSet<Like> Like { get; set; }
-        public DbSet<Role> Role { get; set; }
+        //public DbSet<Role> Role { get; set; }
         public DbSet<User> User { get; set; }
 
 

@@ -1,9 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 public class City
 {
-public int Id { get; set; }
+    
+[Key]
+public int NPA{get;set;}
 
 public string Name{get; set;}
-
-public int FK_NPA{get;set;}
-
 }
