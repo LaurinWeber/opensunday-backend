@@ -38,7 +38,7 @@ namespace OpenSundayApi.Controllers
     #region snippet_GetByID_Location
     // GET: api/Likes/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<IEnumerable<Like>>> GetLikes(long id)
+    public async Task<ActionResult<IEnumerable<Like>>> GetLikes(int id)
     {
 
       //get the list of likes from location

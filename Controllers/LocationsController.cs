@@ -158,7 +158,7 @@ namespace OpenSundayApi.Controllers
     #region snippet_Delete
     // DELETE: api/Locations/5
     [HttpDelete("{id}")]
-    public async Task<ActionResult<Location>> DeleteLocation(long id)
+    public async Task<ActionResult<Location>> DeleteLocation(int id)
     {
       var location = await _context.Location.FindAsync(id);
       if (location == null)
@@ -173,7 +173,7 @@ namespace OpenSundayApi.Controllers
     }
     #endregion
 
-    private bool LocationExists(long id)
+    private bool LocationExists(int id)
     {
       return _context.Location.Any(e => e.Id == id);
     }
