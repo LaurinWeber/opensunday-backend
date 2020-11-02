@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 public class LocationCityCat
 {
 [Key]
-public long Id { get; set; }
+public int Id { get; set; }
 
 public string Name { get; set; }
 [Column(TypeName="decimal(8,6)")]

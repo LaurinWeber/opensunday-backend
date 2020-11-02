@@ -33,7 +33,7 @@ namespace OpenSundayApi.Controllers
     #region snippet_GetByID
     // GET: api/Locations/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Location>> GetLocation(long id)
+    public async Task<ActionResult<Location>> GetLocation(int id)
     {
       //get a location by it ID
       var location = await _context.Location.FindAsync(id);
@@ -51,7 +51,7 @@ namespace OpenSundayApi.Controllers
     #region snippet_Update
     // PUT: api/Location/5
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutLocation(long id, Location location)
+    public async Task<IActionResult> PutLocation(int id, Location location)
     {
       if (id != location.Id)
       {

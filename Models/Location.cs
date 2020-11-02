@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 public class Location
 {
 [Key]
-public long Id { get; set; }
+public int Id { get; set; }
 [Required]
 public string Name { get; set; }
 
