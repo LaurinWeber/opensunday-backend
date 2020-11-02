@@ -64,8 +64,10 @@ namespace OpenSundayApi.Controllers
       
       var users = await _context.User.Where(u => (u.Id == (user_id))).ToListAsync();
       //add user to db
-      if(!(users.length >0)){
-        _context.User.Add(user_id);
+      if(!(users.Count >0)){
+        User u = new User();
+        u.Id = user_id;
+        _context.User.Add(u);
         await _context.SaveChangesAsync();
       }
 
