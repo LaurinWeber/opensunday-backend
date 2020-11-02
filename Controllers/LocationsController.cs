@@ -86,6 +86,17 @@ namespace OpenSundayApi.Controllers
     [HttpPost]
     public async Task<ActionResult<Location>> PostLocation(LocationCityCat l)
     {
+      //check if user is already in db 
+      var user_id = User.Claims.First(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+      //
+      var users = await _context.User.Where(u => (u.Id == (user_id))).ToListAsync();
+
+      if(!(users.length >0)){
+        _context.User.Add(user_id);
+        await _context.SaveChangesAsync();
+      }
+      
+
       //get City with the NPA of the post location from DB
       var city = await _context.City.FindAsync(l.NPA);
 

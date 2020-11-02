@@ -40,12 +40,13 @@ namespace OpenSundayApi.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult<IEnumerable<Like>>> GetLikes(long id)
     {
+
       //get the list of likes from location
       var likes = await _context.Like.Where(l => (l.FK_Location == (id))).ToListAsync();
 
       if (likes == null)
       {
-        return NotFound();
+        return null;
       }
       return likes;
     }
@@ -56,9 +57,17 @@ namespace OpenSundayApi.Controllers
     [HttpPost]
     public async Task<ActionResult<Like>> PostLike(Like like)
     {
-            //retrieve Userid from Token
-             var user_id = User.Claims.First(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
-            like.FK_User = user_id;
+
+      //retrieve Userid from Token
+      var user_id = User.Claims.First(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+      like.FK_User = user_id;
+      
+      var users = await _context.User.Where(u => (u.Id == (user_id))).ToListAsync();
+      //add user to db
+      if(!(users.length >0)){
+        _context.User.Add(user_id);
+        await _context.SaveChangesAsync();
+      }
 
             //Add Like to Db
             _context.Like.Add(like);
