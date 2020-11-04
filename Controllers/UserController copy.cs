@@ -48,7 +48,7 @@ namespace OpenSundayApi.Controllers
     #endregion
 
         #region snippet_Delete
-    // DELETE: api/Likes/5
+    // DELETE: api/User/5
     //user: dislike a locaion
     [HttpDelete("{id}")]
     public async Task<ActionResult<bool>> DeleteUser(int id)
