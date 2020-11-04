@@ -160,6 +160,8 @@ namespace OpenSundayApi.Controllers
     [HttpDelete("{id}")]
     public async Task<ActionResult<Location>> DeleteLocation(int id)
     {
+
+      //remove location
       var location = await _context.Location.FindAsync(id);
       if (location == null)
       {

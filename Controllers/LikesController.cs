@@ -79,5 +79,32 @@ namespace OpenSundayApi.Controllers
     }
     #endregion
 
+    #region snippet_Delete
+    // DELETE: api/Likes/5
+    //delete all likes from a given locaiton
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<bool>> DeleteLikes(int id)
+    {
+
+      var likes = await _context.Like.Where(l => (l.FK_Location == (id))).ToListAsync();
+      if (likes == null)
+      {
+        return false;
+      }
+      else{
+        //delete one entry after the other
+      foreach(var l in likes){
+        _context.Like.Remove(l);
+      }
+
+      //save the changes
+      await _context.SaveChangesAsync();
+      return true;
+
+      }
+
     }
+    #endregion
+
+  }
 }

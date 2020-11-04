@@ -46,5 +46,34 @@ namespace OpenSundayApi.Controllers
       return like;
     }
     #endregion
+
+        #region snippet_Delete
+    // DELETE: api/Likes/5
+    //user: dislike a locaion
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<bool>> DeleteUser(int id)
+    {
+
+      var user_id = User.Claims.First(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+
+      var likes = await _context.Like.Where(l => (l.FK_Location == (id))).ToListAsync();
+      if (likes == null)
+      {
+        return false;
+      }
+      else{
+        //delete one entry after the other
+      foreach(var l in likes){
+        if(l.FK_User == user_id){
+          _context.Like.Remove(l);
+                //save the changes
+      await _context.SaveChangesAsync();
+      return true;
+        }
+      }
+      return false;
+      }
+    }
+    #endregion
 }
 }
