@@ -55,50 +55,24 @@ namespace OpenSundayApi.Controllers
     {
       var user_id = User.Claims.First(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
       
-      var users = await _context.User.Where(u => (u.Id == (user_id))).ToListAsync();
-      //add user to db
-      if(!(users.Count >0)){
-                User u = new User();
-        u.Id = user_id;
-        _context.User.Add(u);
-        await _context.SaveChangesAsync();
-      }
   
-      //get City with the NPA of the post location from DB
-      var city = await _context.City.FindAsync(l.NPA);
+     var locations = await _context.Location.Where(loc => (loc.Id == (l.Id))).ToListAsync();   
 
-      //If city does not exist in DB we add it
-      if(city == null){
-      City c = new City();
-      c.NPA = l.NPA;
-      c.Name = l.CityName;
 
-        _context.City.Add(c);
-        await _context.SaveChangesAsync();
+     Location location = new Location();
+      if (locations != null)
+      {
+        foreach(var lc in locations){
+            location = lc;
+        }
       }
 
-      //As in our post the categoryname is a string we have to retrieve its id from the DB
-      var categories = await _context.Category.Where(cat => (cat.Name == (l.CategoryName))).ToListAsync();
-      int catId = 0;
-
-      foreach(var cat in categories){
-        catId = cat.Id;
-      }
-
-      //Create a location Object according to its attributes in the DB
-      Location location = new Location();
-      location.Id = l.Id;
       location.Name = l.Name;
       // Add creator ID based on the Auth0 User ID found in the JWT token
       location.Creator = User.Claims.First(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
-      location.Latitude = l.Latitude;
-      location.Longitude = l.Longitude;
-      location.Address = l.Address;
       location.Telephone = l.Telephone;
       location.OpeningTime =l.OpeningTime;
       location.ClosingTime = l.ClosingTime;
-      location.FK_Category = catId;
-      location.FK_City = l.NPA;
 
        if (l.Id != location.Id)
       {
