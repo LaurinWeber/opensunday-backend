@@ -51,8 +51,67 @@ namespace OpenSundayApi.Controllers
     #region snippet_Update
     // PUT: api/Location/5
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutLocation(int id, Location location)
+    public async Task<IActionResult> PutLocation(int id, LocationCityCat l)
     {
+      var user_id = User.Claims.First(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+      
+      var users = await _context.User.Where(u => (u.Id == (user_id))).ToListAsync();
+      //add user to db
+      if(!(users.Count >0)){
+                User u = new User();
+        u.Id = user_id;
+        _context.User.Add(u);
+        await _context.SaveChangesAsync();
+      }
+  
+      //get City with the NPA of the post location from DB
+      var city = await _context.City.FindAsync(l.NPA);
+
+      //If city does not exist in DB we add it
+      if(city == null){
+      City c = new City();
+      c.NPA = l.NPA;
+      c.Name = l.CityName;
+
+        _context.City.Add(c);
+        await _context.SaveChangesAsync();
+      }
+
+      //As in our post the categoryname is a string we have to retrieve its id from the DB
+      var categories = await _context.Category.Where(cat => (cat.Name == (l.CategoryName))).ToListAsync();
+      int catId = 0;
+
+      foreach(var cat in categories){
+        catId = cat.Id;
+      }
+
+      //Create a location Object according to its attributes in the DB
+      Location location = new Location();
+      location.Id = l.Id;
+      location.Name = l.Name;
+      // Add creator ID based on the Auth0 User ID found in the JWT token
+      location.Creator = User.Claims.First(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+      location.Latitude = l.Latitude;
+      location.Longitude = l.Longitude;
+      location.Address = l.Address;
+      location.Telephone = l.Telephone;
+      location.OpeningTime =l.OpeningTime;
+      location.ClosingTime = l.ClosingTime;
+      location.FK_Category = catId;
+      location.FK_City = l.NPA;
+
+      //check if location exists if not do not add (by lat, long and name)
+      var locations = await _context.Location.Where(loc => (loc.Name == location.Name)).ToListAsync();
+  
+      if (locations != null)
+      {
+        foreach(var lc in locations){
+          if((lc.Longitude == location.Longitude) && (lc.Latitude == location.Latitude)){
+            return null; //if exists return null
+          }
+        }
+      }
+
       if (id != location.Id)
       {
         return BadRequest();
