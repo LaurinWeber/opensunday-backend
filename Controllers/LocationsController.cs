@@ -50,8 +50,8 @@ namespace OpenSundayApi.Controllers
 
     #region snippet_Update
     // PUT: api/Location/5
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutLocation(int id, LocationCityCat l)
+    [HttpPut]
+    public async Task<IActionResult> PutLocation(LocationCityCat l)
     {
       var user_id = User.Claims.First(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
       
@@ -100,19 +100,7 @@ namespace OpenSundayApi.Controllers
       location.FK_Category = catId;
       location.FK_City = l.NPA;
 
-      //check if location exists if not do not add (by lat, long and name)
-      var locations = await _context.Location.Where(loc => (loc.Name == location.Name)).ToListAsync();
-  
-      if (locations != null)
-      {
-        foreach(var lc in locations){
-          if((lc.Longitude == location.Longitude) && (lc.Latitude == location.Latitude)){
-            return null; //if exists return null
-          }
-        }
-      }
-
-      if (id != location.Id)
+       if (l.Id != location.Id)
       {
         return BadRequest();
       }
@@ -125,7 +113,7 @@ namespace OpenSundayApi.Controllers
       }
       catch (DbUpdateConcurrencyException)
       {
-        if (!LocationExists(id))
+        if (!LocationExists(l.Id))
         {
           return NotFound();
         }
